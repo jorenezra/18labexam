@@ -1,0 +1,5 @@
+class Match(object):
+    def __init__(self, match_id, team_name, team_score):
+        self.match_id = match_id
+        self.team_name2 = team_name2
+        self.team_score2 = team_score2

@@ -1,0 +1,24 @@
+Feature: A script that tally the score of a basketball game
+
+As a scorer I want to be able to view the basketball match score
+and tally the points of both teams
+
+
+Scenario: View score
+Given the following match score:
+| team_name | score |
+| alpha     | 0     |
+| beta      | 0     |
+When I visit the homepage
+Then I see:
+| alpha | beta |
+| 0     | 0    |
+
+Scenario: Tally score
+Given the following match score:
+| team_name | score |
+| alpha     | 0     |
+| beta      | 0     |
+And I am in the homepage
+When I input team_name as "alpha" and score as "2"
+Then I see the team alpha score "2"
