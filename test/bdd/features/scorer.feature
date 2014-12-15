@@ -6,15 +6,18 @@ and tally the points of both teams
 
 Scenario: View score
 Given the I create following match:
-| team_name1 | team_score1 | team_name2 | team_score2 |
-| alpha      | 0           | beta       | 0           |
-When I visit the homepage
-Then I see the match score of "alpha" = "0" and "beta" = "0"
+| match_id | team_name | team_score |
+| 1        | alpha     | 0          |
+| 1        | beta      | 0          |
+And I visit the homepage
+When I input match id as "1" and team name as "alpha"
+Then I see the team score of "0"
 
 Scenario: Tally score
 Given the I create following match:
-| team_name1 | team_score1 | team_name2 | team_score2 |
-| alpha      | 0           | beta       | 0           |
+| match_id | team_name | team score |
+| 1        | alpha     | 0          |
+| 1        | beta      | 0          |
 And I visit the homepage
-When I input team name as "alpha" and score as "2"
-Then I see the match score of "alpha" = "2" and "beta" = "0"
+When I input match id as "1" team name as "alpha" and score as "2"
+Then I see the team score of "2"

@@ -1,7 +1,16 @@
 from lettuce import *
-from nose.tools import assert_equal, assert_in
+from nose.tools import *
 from webtest import TestApp
 
+from scorer.match import Match
+from scorer.scorer import Scorer
+from scorer_app import app, SCORER
+
+@step(u'Given the I create following match:')
+def given_the_i_create_following_match(step):
+    for row in step.hashes:
+        a = Match(row['match_id'], row['team_name'], row['team_score'])
+        SCORER.add_match(a)
 
 @step(u'I visit the homepage')
 def i_visit_the_homepage(step):
@@ -9,26 +18,27 @@ def i_visit_the_homepage(step):
     world.response = world.browser.get('http://localhost:5000/')
     assert_equal(world.response.status_code, 200)
 
-@step(u'And I input team name as "([^"]*)" and score as "([^"]*)"')
-def and_i_input_team_name_as_group1_and_score_as_group2(step, group1, group2):
+@step(u'I input match id as "([^"]*)" and team name as "([^"]*)"')
+def when_i_input_match_id_as_group1_and_team_name_as_group2(step, group1, group2):
+    form = world.response.forms['viewteamscore-form']
+    form['match_id'] = match_id
+    form['team_name'] = team_name
+    world.form_response = form.submit()
+    assert_equal(world.form_response.status_code, 200)
+
+@step(u'Then I see the team score of "([^"]*)"')
+def then_i_see_the_team_score_of_group1(step, group1):
+    assert_in ("Score: {}".format(group1),
+    world.form_response.text)
+
+@step(u'When I input match id as "([^"]*)" team name as "([^"]*)" and score as "([^"]*)"')
+def when_i_input_match_id_as_group1_team_name_as_group2_and_score_as_group3(step, group1, group2, group3):
     form = world.response.forms['tally-form']
+    form['match_id'] = match_id
     form['team_name'] = team_name
     form['score'] = score
     world.form_response = form.submit()
     assert_equal(world.form_response.status_code, 200)
 
-@step(u'I see a match score of "([^"]*)" = "([^"]*)" vs "([^"]*)" = "([^"]*)"')
-def then_i_see_a_match_score_of_group1(step, expected_balance):
-    assert_in ("Balance: {}".format(expected_balance),
-    world.form_response.text)
 
-@step(u'I create account "([^"]*)" with balance of "([^"]*)"')
-def i_create_account_with_balance_of_group1(step, account_number, balance):
-    a = Account(account_number, balance)
-    BANK.add_account(a)
 
-@step(u'I create the following match:')
-def i_create_the_following_match(step):
-    for row in step.hashes:
-        a = Match(row['team_name1'], row['team_score1'], row['team_name2'], row['team_score2'])
-        BANK.add_match(a)

@@ -1,18 +1,12 @@
 class Scorer(object):
     def __init__(self):
-        self.match = {}
+        self.matchs = {}
 
     def add_match(self, account):
-        self.match[match.team_name1] = match.team_score1
+        self.matchs[match.match_id] = match.team_name, match.team_score
     
-    def get_team_score(self, match_id, team_score):
-        return self.accounts.get(account_number)
+    def get_team_score(self, match_id, team_name):
+        return self.match.get(match_id, team_name)
     
-    def tally_score(self, match_id, team_name, points):
-    def account_withdraw(self, account_number,amount):    	    	
-    	if (self.accounts[account_number] > amount):
-    		self.accounts[account_number] -= amount    		
-
-    def does_account_exist(self,account_number):
-    	return account_number in self.accounts
-    	
+    def add_score(self, match_id, team_name, points):
+        self.match[team_score] += score
